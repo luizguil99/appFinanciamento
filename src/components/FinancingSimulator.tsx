@@ -5,9 +5,11 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { useAuth } from '@/contexts/AuthContext'
-import { Calculator, Home, LogOut, TrendingUp, FileText, CheckCircle } from 'lucide-react'
+import { Calculator, Home, LogOut, TrendingUp, FileText, CheckCircle, Save } from 'lucide-react'
 import SignatureModal from './SignatureModal'
 import { usePdfGenerator } from '@/hooks/usePdfGenerator'
+import { useSubmissions } from '@/hooks/useSubmissions'
+import { useSimulations } from '@/hooks/useSimulations'
 
 interface SimulationResult {
   monthlyPayment: number
@@ -24,12 +26,15 @@ function FinancingSimulator() {
   const [termYears, setTermYears] = useState<number>(30)
   const [result, setResult] = useState<SimulationResult | null>(null)
   const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false)
+  const [simulationSaved, setSimulationSaved] = useState(false)
   const { generateProposalPdf, downloadPdf } = usePdfGenerator()
+  const { createSubmission } = useSubmissions()
+  const { createSimulation } = useSimulations()
 
   const annualRate = 0.12 // 12% ao ano
   const monthlyRate = annualRate / 12
 
-  const calculateFinancing = () => {
+  const calculateFinancing = async () => {
     const value = parseFloat(propertyValue.replace(/[^\d,]/g, '').replace(',', '.'))
     
     if (!value || value <= 0) {
@@ -64,13 +69,37 @@ function FinancingSimulator() {
 
     const totalAmount = financedAmount + totalInterest
 
-    setResult({
+    const simulationResult = {
       monthlyPayment: firstMonthlyPayment,
       totalAmount,
       totalInterest,
       downPayment,
       financedAmount
-    })
+    }
+
+    setResult(simulationResult)
+    setSimulationSaved(false)
+
+    // Salvar a simulação automaticamente no banco de dados
+    if (user?.email) {
+      const simulationData = {
+        userEmail: user.email,
+        propertyValue,
+        downPayment,
+        downPaymentPercentage,
+        financedAmount,
+        monthlyPayment: firstMonthlyPayment,
+        totalAmount,
+        totalInterest,
+        termYears
+      }
+
+      const saved = await createSimulation(simulationData)
+      if (saved) {
+        setSimulationSaved(true)
+        setTimeout(() => setSimulationSaved(false), 3000) // Remove a mensagem após 3 segundos
+      }
+    }
   }
 
   const formatCurrency = (value: number) => {
@@ -106,13 +135,14 @@ function FinancingSimulator() {
     setPropertyValue('')
     setDownPaymentPercentage(20)
     setTermYears(30)
+    setSimulationSaved(false)
   }
 
   const handleAcceptProposal = () => {
     setIsSignatureModalOpen(true)
   }
 
-  const handleSignatureConfirm = (signatureData: { name: string; cpf: string; signature: string; date: string }) => {
+  const handleSignatureConfirm = async (signatureData: { name: string; cpf: string; signature: string; date: string }) => {
     if (!result || !user?.email) return
 
     const financingData = {
@@ -127,13 +157,37 @@ function FinancingSimulator() {
       userEmail: user.email
     }
 
+    // Salvar submissão no Supabase
+    const submissionData = {
+      userEmail: user.email,
+      userName: signatureData.name,
+      userCpf: signatureData.cpf.replace(/\D/g, ''), // Remove formatação do CPF
+      propertyValue,
+      downPayment: result.downPayment,
+      downPaymentPercentage,
+      financedAmount: result.financedAmount,
+      monthlyPayment: result.monthlyPayment,
+      totalAmount: result.totalAmount,
+      totalInterest: result.totalInterest,
+      termYears,
+      signatureData: signatureData.signature
+    }
+
+    const submissionSuccess = await createSubmission(submissionData)
+    
+    if (!submissionSuccess) {
+      alert('Erro ao salvar a submissão. Tente novamente.')
+      return
+    }
+
+    // Gerar e baixar PDF
     const pdf = generateProposalPdf(financingData, signatureData)
     downloadPdf(pdf, `proposta-financiamento-${signatureData.name.replace(/\s+/g, '-').toLowerCase()}.pdf`)
     
     setIsSignatureModalOpen(false)
     
     // Feedback visual de sucesso
-    alert('PDF gerado e baixado com sucesso! Sua proposta foi assinada digitalmente.')
+    alert('Proposta enviada com sucesso! O PDF foi gerado e sua submissão está sendo analisada.')
   }
 
   return (
@@ -148,7 +202,7 @@ function FinancingSimulator() {
               </div>
               <div>
                 <h1 className="text-lg font-semibold text-foreground">
-                  SimulaFin
+                  SimuleFin
                 </h1>
                 <p className="text-sm text-muted-foreground">
                   Simulador de Financiamento
@@ -280,6 +334,12 @@ function FinancingSimulator() {
                   <p className="text-xs text-muted-foreground">
                     As parcelas diminuem mensalmente
                   </p>
+                  {simulationSaved && (
+                    <div className="mt-3 flex items-center justify-center text-green-600 text-sm">
+                      <CheckCircle className="h-4 w-4 mr-1" />
+                      Simulação salva automaticamente
+                    </div>
+                  )}
                 </div>
 
                 <Separator />
