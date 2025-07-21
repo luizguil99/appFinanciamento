@@ -1,6 +1,6 @@
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import LoginScreen from './components/LoginScreen'
-import Dashboard from './components/Dashboard'
+import FinancingSimulator from './components/FinancingSimulator'
 
 function AppContent() {
   const { user, loading } = useAuth()
@@ -16,7 +16,7 @@ function AppContent() {
     )
   }
 
-  return user ? <Dashboard /> : <LoginScreen />
+  return user ? <FinancingSimulator /> : <LoginScreen />
 }
 
 function App() {
