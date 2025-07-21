@@ -86,14 +86,14 @@ function LoginScreen() {
         <div className="flex items-center justify-center p-8">
           <div className="w-full max-w-md space-y-6">
             {error && (
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
+              <Alert variant="destructive" className="border-2 border-destructive/30">
+                <AlertDescription className="font-medium">{error}</AlertDescription>
               </Alert>
             )}
             
             {success && (
-              <Alert>
-                <AlertDescription>{success}</AlertDescription>
+              <Alert className="border-2 border-primary/30 bg-primary/5">
+                <AlertDescription className="font-medium text-primary">{success}</AlertDescription>
               </Alert>
             )}
 
@@ -113,7 +113,7 @@ function LoginScreen() {
                 </div>
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email">E-mail</Label>
+                    <Label htmlFor="email" className="font-semibold text-foreground">E-mail</Label>
                     <Input 
                       id="email" 
                       type="email"
@@ -122,10 +122,11 @@ function LoginScreen() {
                       onChange={(e) => setLoginData(prev => ({ ...prev, email: e.target.value }))}
                       required 
                       disabled={isLoading}
+                      className="border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground font-medium placeholder:text-muted-foreground/70 transition-all duration-200"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="password">Senha</Label>
+                    <Label htmlFor="password" className="font-semibold text-foreground">Senha</Label>
                     <Input 
                       id="password" 
                       type="password" 
@@ -134,9 +135,14 @@ function LoginScreen() {
                       onChange={(e) => setLoginData(prev => ({ ...prev, password: e.target.value }))}
                       required 
                       disabled={isLoading}
+                      className="border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground font-medium placeholder:text-muted-foreground/70 transition-all duration-200"
                     />
                   </div>
-                  <Button className="w-full" type="submit" disabled={isLoading || loading}>
+                  <Button 
+                    className="w-full font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-md hover:shadow-lg border-2 border-primary hover:border-primary/80 transition-all duration-200" 
+                    type="submit" 
+                    disabled={isLoading || loading}
+                  >
                     {isLoading ? 'Entrando...' : 'Entrar'}
                   </Button>
                 </form>
@@ -152,7 +158,7 @@ function LoginScreen() {
                 </div>
                 <form onSubmit={handleRegister} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Nome completo</Label>
+                    <Label htmlFor="name" className="font-semibold text-foreground">Nome completo</Label>
                     <Input 
                       id="name" 
                       placeholder="Seu nome completo" 
@@ -160,10 +166,11 @@ function LoginScreen() {
                       onChange={(e) => setRegisterData(prev => ({ ...prev, name: e.target.value }))}
                       required 
                       disabled={isLoading}
+                      className="border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground font-medium placeholder:text-muted-foreground/70 transition-all duration-200"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="register-email">E-mail</Label>
+                    <Label htmlFor="register-email" className="font-semibold text-foreground">E-mail</Label>
                     <Input 
                       id="register-email" 
                       type="email" 
@@ -172,10 +179,11 @@ function LoginScreen() {
                       onChange={(e) => setRegisterData(prev => ({ ...prev, email: e.target.value }))}
                       required 
                       disabled={isLoading}
+                      className="border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground font-medium placeholder:text-muted-foreground/70 transition-all duration-200"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="register-password">Senha</Label>
+                    <Label htmlFor="register-password" className="font-semibold text-foreground">Senha</Label>
                     <Input 
                       id="register-password" 
                       type="password" 
@@ -184,10 +192,11 @@ function LoginScreen() {
                       onChange={(e) => setRegisterData(prev => ({ ...prev, password: e.target.value }))}
                       required 
                       disabled={isLoading}
+                      className="border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground font-medium placeholder:text-muted-foreground/70 transition-all duration-200"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="confirm-password">Confirmar senha</Label>
+                    <Label htmlFor="confirm-password" className="font-semibold text-foreground">Confirmar senha</Label>
                     <Input 
                       id="confirm-password" 
                       type="password" 
@@ -196,9 +205,14 @@ function LoginScreen() {
                       onChange={(e) => setRegisterData(prev => ({ ...prev, confirmPassword: e.target.value }))}
                       required 
                       disabled={isLoading}
+                      className="border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground font-medium placeholder:text-muted-foreground/70 transition-all duration-200"
                     />
                   </div>
-                  <Button className="w-full" type="submit" disabled={isLoading || loading}>
+                  <Button 
+                    className="w-full font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-md hover:shadow-lg border-2 border-primary hover:border-primary/80 transition-all duration-200" 
+                    type="submit" 
+                    disabled={isLoading || loading}
+                  >
                     {isLoading ? 'Cadastrando...' : 'Cadastrar'}
                   </Button>
                 </form>
