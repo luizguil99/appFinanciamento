@@ -1,11 +1,30 @@
+import { AuthProvider, useAuth } from './contexts/AuthContext'
+import LoginScreen from './components/LoginScreen'
+import Dashboard from './components/Dashboard'
 
+function AppContent() {
+  const { user, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
+          <p className="mt-2 text-muted-foreground">Carregando...</p>
+        </div>
+      </div>
+    )
+  }
+
+  return user ? <Dashboard /> : <LoginScreen />
+}
 
 function App() {
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
-      <h1 className="text-4xl font-bold">Vite/Typescript-Template</h1>
-    </div>
-  );
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  )
 }
 
-export default App;
+export default App
