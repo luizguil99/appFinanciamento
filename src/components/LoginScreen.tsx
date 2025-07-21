@@ -83,8 +83,8 @@ function LoginScreen() {
     <div className="min-h-screen bg-background">
       <div className="grid grid-cols-1 lg:grid-cols-2 h-screen">
         {/* Left Column - Forms */}
-        <div className="flex items-center justify-center p-8">
-          <div className="w-full max-w-md space-y-6">
+        <div className="flex items-center justify-center p-4 sm:p-8">
+          <div className="w-full max-w-md space-y-4 sm:space-y-6 p-4 sm:p-8 border-2 border-border rounded-xl bg-card shadow-lg">
             {error && (
               <Alert variant="destructive" className="border-2 border-destructive/30">
                 <AlertDescription className="font-medium">{error}</AlertDescription>
@@ -106,8 +106,8 @@ function LoginScreen() {
               {/* Login Form */}
               <TabsContent value="login" className="space-y-4">
                 <div className="space-y-2 text-center">
-                  <h1 className="text-2xl font-bold">Bem-vindo de volta</h1>
-                  <p className="text-muted-foreground">
+                  <h1 className="text-xl sm:text-2xl font-bold">Bem-vindo de volta</h1>
+                  <p className="text-sm sm:text-base text-muted-foreground">
                     Digite suas credenciais para acessar sua conta
                   </p>
                 </div>
@@ -122,7 +122,7 @@ function LoginScreen() {
                       onChange={(e) => setLoginData(prev => ({ ...prev, email: e.target.value }))}
                       required 
                       disabled={isLoading}
-                      className="border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground font-medium placeholder:text-muted-foreground/70 transition-all duration-200"
+                      className="border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground font-medium placeholder:text-muted-foreground/70 transition-all duration-200 text-sm sm:text-base"
                     />
                   </div>
                   <div className="space-y-2">
@@ -135,7 +135,7 @@ function LoginScreen() {
                       onChange={(e) => setLoginData(prev => ({ ...prev, password: e.target.value }))}
                       required 
                       disabled={isLoading}
-                      className="border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground font-medium placeholder:text-muted-foreground/70 transition-all duration-200"
+                      className="border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground font-medium placeholder:text-muted-foreground/70 transition-all duration-200 text-sm sm:text-base"
                     />
                   </div>
                   <Button 
@@ -146,13 +146,49 @@ function LoginScreen() {
                     {isLoading ? 'Entrando...' : 'Entrar'}
                   </Button>
                 </form>
+
+                {/* Demo Access Section */}
+                <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-muted/50 rounded-lg border-2 border-muted">
+                  <h3 className="text-xs sm:text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                    🎯 Acesso Demo
+                  </h3>
+                  <div className="space-y-2 text-xs sm:text-sm">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                      <span className="font-medium text-muted-foreground">Email:</span>
+                      <span className="font-mono text-foreground bg-background px-2 py-1 rounded border text-xs">
+                        bryamadams030@gmail.com
+                      </span>
+                    </div>
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                      <span className="font-medium text-muted-foreground">Senha:</span>
+                      <span className="font-mono text-foreground bg-background px-2 py-1 rounded border text-xs">
+                        KiwifyAcesso123
+                      </span>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="w-full mt-2 font-medium border-2 border-border hover:border-primary hover:bg-primary/10 hover:text-primary transition-all duration-200 text-xs sm:text-sm"
+                      onClick={() => {
+                        setLoginData({
+                          email: 'bryamadams030@gmail.com',
+                          password: 'KiwifyAcesso123'
+                        })
+                      }}
+                      disabled={isLoading}
+                    >
+                      Preencher Dados Demo
+                    </Button>
+                  </div>
+                </div>
               </TabsContent>
 
               {/* Registration Form */}
               <TabsContent value="register" className="space-y-4">
                 <div className="space-y-2 text-center">
-                  <h1 className="text-2xl font-bold">Crie sua conta</h1>
-                  <p className="text-muted-foreground">
+                  <h1 className="text-xl sm:text-2xl font-bold">Crie sua conta</h1>
+                  <p className="text-sm sm:text-base text-muted-foreground">
                     Preencha os campos abaixo para se cadastrar
                   </p>
                 </div>
@@ -166,7 +202,7 @@ function LoginScreen() {
                       onChange={(e) => setRegisterData(prev => ({ ...prev, name: e.target.value }))}
                       required 
                       disabled={isLoading}
-                      className="border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground font-medium placeholder:text-muted-foreground/70 transition-all duration-200"
+                      className="border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground font-medium placeholder:text-muted-foreground/70 transition-all duration-200 text-sm sm:text-base"
                     />
                   </div>
                   <div className="space-y-2">
@@ -179,7 +215,7 @@ function LoginScreen() {
                       onChange={(e) => setRegisterData(prev => ({ ...prev, email: e.target.value }))}
                       required 
                       disabled={isLoading}
-                      className="border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground font-medium placeholder:text-muted-foreground/70 transition-all duration-200"
+                      className="border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground font-medium placeholder:text-muted-foreground/70 transition-all duration-200 text-sm sm:text-base"
                     />
                   </div>
                   <div className="space-y-2">
@@ -192,7 +228,7 @@ function LoginScreen() {
                       onChange={(e) => setRegisterData(prev => ({ ...prev, password: e.target.value }))}
                       required 
                       disabled={isLoading}
-                      className="border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground font-medium placeholder:text-muted-foreground/70 transition-all duration-200"
+                      className="border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground font-medium placeholder:text-muted-foreground/70 transition-all duration-200 text-sm sm:text-base"
                     />
                   </div>
                   <div className="space-y-2">
@@ -205,7 +241,7 @@ function LoginScreen() {
                       onChange={(e) => setRegisterData(prev => ({ ...prev, confirmPassword: e.target.value }))}
                       required 
                       disabled={isLoading}
-                      className="border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground font-medium placeholder:text-muted-foreground/70 transition-all duration-200"
+                      className="border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground font-medium placeholder:text-muted-foreground/70 transition-all duration-200 text-sm sm:text-base"
                     />
                   </div>
                   <Button 
@@ -228,7 +264,7 @@ function LoginScreen() {
           <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-green-200/30 to-transparent rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-emerald-300/25 to-transparent rounded-full blur-2xl"></div>
           
-          <blockquote className="space-y-3 relative z-10">
+          <blockquote className="space-y-3 relative z-10 text-right">
             <p className="text-xl font-medium text-green-800 leading-relaxed">
               &ldquo;Transforme suas ideias em realidade com nossa plataforma de financiamento.&rdquo;
             </p>
